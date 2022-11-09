@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.helper{
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, .5);
+    padding: 20px;
+    text-align: center;
+    border: 5px dashed #000;
+    border-radius: 5%;
+}
