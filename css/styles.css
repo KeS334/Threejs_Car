@@ -5,10 +5,11 @@
     overflow: hidden;
 }
 .helper{
+    font-family: sans-serif;
     position: fixed;
-    top: 10%;
+    top: 5%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     z-index: 1;
     color: #fff;
     display: flex;
@@ -18,4 +19,12 @@
     text-align: center;
     border: 5px dashed #000;
     border-radius: 5%;
+    width: 360px;
+    max-width: 90%;
+    font-size: 12px;
+}
+@media (max-width: 720px) {
+    .helper{
+        font-size: 10px;
+    }
 }
