@@ -1,10 +1,15 @@
 import { GLTFLoader } from './lib/GLTFLoader.js';
-
+import { ARButton } from './lib/ARButton.js';
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setClearColor(0x000000);
 document.body.appendChild( renderer.domElement );
+
+
+renderer.xr.enabled = true;
+document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
+
 
 const scene = new THREE.Scene();
 const loaderTexture = new THREE.TextureLoader();
@@ -141,3 +146,5 @@ function animate() {
     requestAnimationFrame(animate);
 }
 animate();
+
+
