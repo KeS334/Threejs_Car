@@ -13,8 +13,10 @@ let objects = {
     car: {data: null, mixer: null, action: null, autoRun: false, wheel: []}
 };
 let wheels = {
-    names: ['Front_wheel001', 'Front_wheel', 'Rear_wheel','Rear_wheel001'],
-    objects:[]
+    namesRight: ['Front_wheel001', 'Rear_wheel001'],
+    objectsRight:[],
+    namesLeft: ['Front_wheel', 'Rear_wheel'],
+    objectsLeft:[],
 };
 
 const renderer = new THREE.WebGLRenderer();
@@ -38,7 +40,7 @@ async function init() {
     scene.background = loaderTexture.load(BACKGROUND_LINK);
 
     camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 5000 );
-    camera.position.set(0, 500, 1000);
+    camera.position.set(0, 1000, 1000);
 
     light = new THREE.HemisphereLight( 0xffffff, 0x000000, 1 );
 
@@ -127,7 +129,8 @@ const changeColor = (object, obj_name, color) => {
 }
 const changeCarX = (delta) => {
     objects.car.data.scene.position.x += delta
-    wheels.objects.forEach(item => item.rotation.z += 0.01 * delta)
+    wheels.objectsRight.forEach(item => item.rotation.z += 0.01 * delta)
+    wheels.objectsLeft.forEach(item => item.rotation.z -= 0.01 * delta)
 }
 const changeCarMode = (mode) => {
     switch (mode){
@@ -143,8 +146,7 @@ const changeCarMode = (mode) => {
 }
 const createWheelArray = (object, wheels) => {
     object.traverse((item) => {
-        if(wheels.names.includes(item.name)){
-            wheels.objects.push(item)
-        }
+        if(wheels.namesRight.includes(item.name)){ wheels.objectsRight.push(item) }
+        if(wheels.namesLeft.includes(item.name)){ wheels.objectsLeft.push(item) }
     })
 }
