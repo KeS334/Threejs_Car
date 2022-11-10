@@ -8,8 +8,9 @@ let light;
 
 let objects = {
     plane: { geometry: null, material: null, mesh: null},
-    boxA: { geometry: null, material: null, mesh: null},
-    boxB: { geometry: null, material: null, mesh: null},
+    box: { geometry: null, material: null},
+    boxA: null,
+    boxB: null,
     car: {data: null, mixer: null, action: null, autoRun: false, wheel: []}
 };
 let wheels = {
@@ -50,15 +51,12 @@ async function init() {
     objects.plane.mash.position.set(10, 10, 0);
     objects.plane.mash.rotation.x = -Math.PI / 2
 
-    objects.boxA.geometry = new THREE.BoxGeometry( 1000, 40, 40 );
-    objects.boxA.material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
-    objects.boxA.mesh = new THREE.Mesh( objects.boxA.geometry, objects.boxA.material );
-    objects.boxA.mesh.position.set(0, 20, -300);
-
-    objects.boxB.geometry = new THREE.BoxGeometry( 1000, 40, 40 );
-    objects.boxB.material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
-    objects.boxB.mesh = new THREE.Mesh( objects.boxB.geometry, objects.boxB.material );
-    objects.boxB.mesh.position.set(0, 20, 300);
+    objects.box.geometry = new THREE.BoxGeometry( 1000, 40, 40 );
+    objects.box.material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+    objects.boxA = new THREE.Mesh( objects.box.geometry, objects.box.material );
+    objects.boxB = new THREE.Mesh( objects.box.geometry, objects.box.material );
+    objects.boxA.position.set(0, 20, -300);
+    objects.boxB.position.set(0, 20, 300);
 
     objects.car.data = await loader.loadAsync(MODEL_LINK);
     objects.car.data.scene.position.set(-500, 50, 0);
@@ -67,7 +65,7 @@ async function init() {
     objects.car.action.play()
     createWheelArray(objects.car.data.scene, wheels);
 
-    addToScene(light, objects.plane.mash,objects.boxA.mesh, objects.boxB.mesh, objects.car.data.scene);
+    addToScene(light, objects.plane.mash,objects.boxA, objects.boxB, objects.car.data.scene);
 }
 
 function animate() {
