@@ -11,7 +11,7 @@ let objects = {
     box: { geometry: null, material: null},
     boxA: null,
     boxB: null,
-    car: {data: null, mixer: null, action: null, autoRun: false, wheel: []}
+    car: {data: null, mixer: null, action: null, wheel: [], direction: 'forward'}
 };
 let wheels = {
     namesRight: ['Front_wheel001', 'Rear_wheel001'],
@@ -59,7 +59,7 @@ async function init() {
     objects.boxB.position.set(0, 20, 300);
 
     objects.car.data = await loader.loadAsync(MODEL_LINK);
-    objects.car.data.scene.position.set(-500, 50, 0);
+    objects.car.data.scene.position.set(-502, 50, 0);
     objects.car.mixer = new THREE.AnimationMixer(objects.car.data.scene);
     objects.car.action = objects.car.mixer.clipAction(objects.car.data.animations[0])
     objects.car.action.play()
@@ -73,39 +73,23 @@ function animate() {
     delta = clock.getDelta();
     if (objects.car.mixer) { objects.car.mixer.update(delta) }
 
-    if(objects.car.autoRun && objects.car.data.scene.position.x < 500){
-        changeCarX(2)
-    }
-    camera.lookAt(objects.car.data.scene.position.x, 200, 0);
+    if (objects.car.direction === 'forward') { changeCarX(5) }
+    if (objects.car.direction === 'back') { changeCarX(-2) }
 
-    if(objects.car.data.scene.position.x >= 500){
-        changeCarMode('stop')
+    if( objects.car.data.scene.position.x > 500){
+        objects.car.direction = 'back';
         changeColor(objects.car.data.scene, 'Frame_Orange_0', 0xffffff)
     }
+    if( objects.car.data.scene.position.x < - 500){
+        objects.car.direction = 'forward'
+        changeColor(objects.car.data.scene, 'Frame_Orange_0', 0xfa3f1d)
+    }
+    camera.lookAt(objects.car.data.scene.position.x, 200, 0);
 
     renderer.render( scene, camera );
     requestAnimationFrame(animate);
 }
 
-
-document.addEventListener('keydown', function(event) {
-    switch (event.code){
-        case 'KeyW' :
-        case 'ArrowUp':
-            if(objects.car.data.scene.position.x < 500)
-                changeCarX(10)
-            break;
-        case 'KeyS' :
-        case 'ArrowDown':
-            if(objects.car.data.scene.position.x > -500)
-                changeCarX(-10)
-            break;
-        case 'Space':
-            changeCarMode()
-            break;
-    }
-});
-document.querySelector('button').onclick = () => { changeCarMode(); }
 window.addEventListener('resize', resize );
 
 const addToScene = (...entities) => {
@@ -128,18 +112,6 @@ const changeCarX = (delta) => {
     objects.car.data.scene.position.x += delta
     wheels.objectsRight.forEach(item => item.rotation.z += 0.01 * delta)
     wheels.objectsLeft.forEach(item => item.rotation.z -= 0.01 * delta)
-}
-const changeCarMode = (mode) => {
-    switch (mode){
-        case 'run':
-            objects.car.autoRun = true
-            break
-        case 'stop':
-            objects.car.autoRun = false
-            break
-        default:
-            objects.car.autoRun = !objects.car.autoRun
-    }
 }
 const createWheelArray = (object, wheels) => {
     object.traverse((item) => {
