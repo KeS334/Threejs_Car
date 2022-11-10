@@ -105,9 +105,8 @@ document.addEventListener('keydown', function(event) {
             break;
     }
 });
-document.querySelector('button').onclick = () => {
-    changeCarMode();
-}
+document.querySelector('button').onclick = () => { changeCarMode(); }
+window.addEventListener('resize', resize );
 
 const addToScene = (...entities) => {
     entities.forEach(item =>scene.add(item))
@@ -147,4 +146,9 @@ const createWheelArray = (object, wheels) => {
         if(wheels.namesRight.includes(item.name)){ wheels.objectsRight.push(item) }
         if(wheels.namesLeft.includes(item.name)){ wheels.objectsLeft.push(item) }
     })
+}
+function resize(){
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
 }
