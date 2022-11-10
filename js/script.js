@@ -8,7 +8,7 @@ document.body.appendChild( renderer.domElement );
 
 const scene = new THREE.Scene();
 const loaderTexture = new THREE.TextureLoader();
-const bgTexture = loaderTexture.load('../img/sky.png');
+const bgTexture = loaderTexture.load('https://kes334.github.io/Threejs_Car/img/sky.png');
 scene.background = bgTexture;
 
 
@@ -44,7 +44,7 @@ scene.add( BoxB );
 
 
 const loader = new GLTFLoader();
-const loadedData = await loader.loadAsync('../models/low-poly_truck_car_drifter.glb');
+const loadedData = await loader.loadAsync('https://kes334.github.io/Threejs_Car/models/low-poly_truck_car_drifter.glb');
 scene.add(loadedData.scene);
 loadedData.scene.position.set(0, 50, 0);
 console.log(loadedData)
